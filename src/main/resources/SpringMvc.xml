@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+        http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+    
+    <!-- @Controller注解扫描 -->
+    <context:component-scan base-package="com.hik.hyy.controller"></context:component-scan>
+    
+    <mvc:annotation-driven conversion-service="conversionService"></mvc:annotation-driven>
+<!--     <mvc:annotation-driven></mvc:annotation-driven> -->
+    <!-- 配置视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/static/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	
+	<!-- 配置自定义转换器 -->
+	<bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<set>
+				<bean class="com.hik.hyy.convert.CustomGlobalStrToDateConverter"/>
+			</set>
+		</property>
+	</bean>
+	<!-- 静态资源 -->
+	<mvc:resources location="/static" mapping="/**"/>
+	<!-- 异常处理器 -->
+	<bean id="baseExceptionResolver" class="com.hik.hyy.exception.BaseExceptionResolver"></bean>
+</beans>
